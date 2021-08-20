@@ -302,6 +302,9 @@ test_plans:
     params:
       sleep_params: mem
 
+  uname:
+    rootfs: debian_buster_nfs
+
   usb:
     rootfs: debian_buster_ramdisk
 
@@ -1828,6 +1831,7 @@ test_configs:
       - baseline
       - baseline-nfs
       - ltp-ipc
+      - uname
 
   - device_type: cubietruck
     test_plans:
@@ -1915,6 +1919,7 @@ test_configs:
       - ltp-mm
       - ltp-pty
       - ltp-timers
+      - uname
       - sleep
 
   - device_type: hp-x360-12b-n4000-octopus
@@ -2159,6 +2164,7 @@ test_configs:
     test_plans:
       - baseline
       - baseline-nfs
+      - uname
 
   - device_type: minnowboard-turbot-E3826
     test_plans:
@@ -2305,6 +2311,7 @@ test_configs:
     test_plans:
       - baseline_qemu
       - baseline-qemu-docker
+      - uname
       - v4l2-compliance-vivid
 
   - device_type: qemu_x86_64-uefi
@@ -2318,6 +2325,7 @@ test_configs:
   - device_type: r8a774a1-hihope-rzg2m-ex
     test_plans:
       - baseline
+      - uname
 
   - device_type: r8a774b1-hihope-rzg2n-ex
     test_plans:

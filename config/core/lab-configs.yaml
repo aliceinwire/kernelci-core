@@ -25,6 +25,7 @@ labs:
       - passlist:
           plan:
             - baseline
+            - uname
 
   lab-clabbe:
     lab_type: lava
