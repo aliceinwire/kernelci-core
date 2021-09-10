@@ -1077,6 +1077,11 @@ scripts/kconfig/merge_config.sh -O {output} '{base}' '{frag}' {redir}
         if not _download_file(url, cip_config):
             raise FileNotFoundError("Error reading {}".format(url))
 
+    def _download_config(self, config_url):
+        config_path = os.path.join(self._output_path, ".config")
+        if not _download_file(config_url, config_path):
+            raise FileNotFoundError("Error reading {}".format(config_url))
+
     def run(self, jopt=None, verbose=False, opts=None):
         """Make the kernel config
 
@@ -1108,6 +1113,13 @@ scripts/kconfig/merge_config.sh -O {output} '{base}' '{frag}' {redir}
             kci_frag_name = 'kernelci.config'
             self._gen_kci_frag(configs, fragments, kci_frag_name)
 
+        if defconfig.startswith('https://'):
+            defconfig_path = urllib.parse.urlparse(defconfig).path
+            defconfig_parts = ['https'] + defconfig_path.split('/')
+            defconfig_name = '-'.join(defconfig_parts)
+        else:
+            defconfig_name = defconfig
+
         bmeta = self._meta.get('bmeta')
         rev, env = (bmeta[cat] for cat in ('revision', 'environment'))
         publish_path = '/'.join(item.replace('/', '-') for item in [
@@ -1115,7 +1127,7 @@ scripts/kconfig/merge_config.sh -O {output} '{base}' '{frag}' {redir}
             rev['branch'],
             rev['describe'],
             env['arch'],
-            defconfig,
+            defconfig_name,
             env['name'],
         ])
 
@@ -1131,6 +1143,9 @@ scripts/kconfig/merge_config.sh -O {output} '{base}' '{frag}' {redir}
 
         if target.startswith("cip://"):
             self._create_cip_config(target)
+            res = self._make('olddefconfig', jopt, verbose, opts)
+        elif target.startswith('https://'):
+            self._download_config(target)
             res = self._make('olddefconfig', jopt, verbose, opts)
         else:
             res = self._make(target, jopt, verbose, opts)

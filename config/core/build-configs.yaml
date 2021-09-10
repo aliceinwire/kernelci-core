@@ -733,7 +733,7 @@ build_configs:
           x86_64:
             <<: *x86_64_arch
             extra_configs:
-              - 'cip://4.19.y-cip/x86/cip_qemu_defconfig'
+              - 'https://gitlab.com/cip-project/cip-kernel/cip-kernel-config/-/raw/master/4.19.y-cip/x86/cip_qemu_defconfig'
 
   cip_4.19-rt:
     tree: cip
